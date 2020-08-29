@@ -34,6 +34,22 @@ module.exports = () => {
     });
 
 
+    bot.onText(/\/contacts/, async msg => {
+        const answer = await answerBuilder('3');
+        const GET_CHAT = helper.getChatId(msg)
+
+        helper.setSendMessage(bot, answer, GET_CHAT)
+    });
+
+
+    bot.onText(/\/fund/, async msg => {
+        const answer = await answerBuilder('4');
+        const GET_CHAT = helper.getChatId(msg)
+
+        helper.setSendMessage(bot, answer, GET_CHAT)
+    });
+
+
     bot.on('callback_query', async query => {
         // Не учитывать в статистике нажатия на кнопку "Назад"
         const prevBtn = !!(query.data.indexOf('<') + 1)
