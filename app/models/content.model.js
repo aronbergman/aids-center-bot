@@ -1,12 +1,12 @@
 module.exports = (sequelize, Sequelize) => {
-    const Contents = sequelize.define("contents", {
+    const Content = sequelize.define("content", {
         text: {
             type: Sequelize.TEXT('long')
         },
-        titleId: {
+        buttonId: {
             type: Sequelize.INTEGER
         }
     });
 
-    return Contents;
+    return Content;
 };

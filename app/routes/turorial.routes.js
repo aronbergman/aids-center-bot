@@ -4,7 +4,9 @@ module.exports = app => {
   var router = require("express").Router();
 
   // Create a new Tutorial
-  router.post("/subtitles", tutorials.getTitles);
+  router.post("/buttons", tutorials.getButtons);
+  router.post("/content", tutorials.getContent);
+  router.post("/statistics", tutorials.setStat);
 
   // // Retrieve all Tutorials
   // router.get("/", tutorials.findAll);
@@ -24,5 +26,5 @@ module.exports = app => {
   // // Delete all Tutorials
   // router.delete("/", tutorials.deleteAll);
 
-  app.use('/api/tutorials', router);
+  app.use('/api', router);
 };

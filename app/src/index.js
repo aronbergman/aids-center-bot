@@ -1,5 +1,3 @@
-const DESCRIPTIONS = require('../constants/descriptions')
-
 module.exports = () => {
     require('dotenv').config()
 
@@ -13,75 +11,41 @@ module.exports = () => {
     helper.logStart()
 
     bot.onText(/\/start/, async msg => {
-        const text = DESCRIPTIONS.HELLO + DESCRIPTIONS.START;
-        const buttons = await answerBuilder(null);
+        const answer = await answerBuilder('0', '9999');
         const GET_CHAT = helper.getChatId(msg)
 
-        bot.sendMessage(GET_CHAT, text, {
-            parse_mode: "Markdown",
-            reply_markup: {
-                inline_keyboard: buttons
-            },
-            disable_notification: true
-        });
+        helper.setSendMessage(bot, answer, GET_CHAT)
     });
+
 
     bot.onText(/\/help/, async msg => {
-        const text = DESCRIPTIONS.HELP;
-        const buttons = await answerBuilder('1');
+        const answer = await answerBuilder('1');
         const GET_CHAT = helper.getChatId(msg)
 
-        bot.sendMessage(GET_CHAT, text, {
-            parse_mode: "Markdown",
-            reply_markup: {
-                inline_keyboard: buttons
-            },
-            disable_notification: true
-        });
+        helper.setSendMessage(bot, answer, GET_CHAT)
     });
 
+
     bot.onText(/\/digest/, async msg => {
-        const text = DESCRIPTIONS.DIGEST;
-        const buttons = await answerBuilder('2');
+        const answer = await answerBuilder('2');
         const GET_CHAT = helper.getChatId(msg)
 
-        bot.sendMessage(GET_CHAT, text, {
-            parse_mode: "Markdown",
-            reply_markup: {
-                inline_keyboard: buttons
-            },
-            disable_notification: true
-        });
+        helper.setSendMessage(bot, answer, GET_CHAT)
     });
 
 
     bot.on('callback_query', async query => {
-        const prevBtnId = +query.data
-        let text = null
+        // Не учитывать в статистике нажатия на кнопку "Назад"
+        const prevBtn = !!(query.data.indexOf('<') + 1)
+        let setParentId = ''
 
-        switch (query.data) {
-            case 'null':
-                text = DESCRIPTIONS.START;
-                break
-            case '1':
-                text = DESCRIPTIONS.HELP;
-                break
-            case '2':
-                text = DESCRIPTIONS.DIGEST;
-                break
-            case '5':
-                text = DESCRIPTIONS.UNSECURITED_CONTACT;
-                break
+        if (prevBtn) {
+            setParentId = query.data.substring(0, query.data.length - 1)
+        } else {
+            setParentId = +query.data
         }
 
-        const buttons = await answerBuilder(prevBtnId)
-
-        bot.sendMessage(query.message.chat.id, `${text}`, {
-            parse_mode: "Markdown",
-            reply_markup: {
-                inline_keyboard: buttons
-            },
-            disable_notification: true
-        })
+        const answer = await answerBuilder(setParentId)
+        helper.setSendMessage(bot, answer, query.message.chat.id, !prevBtn)
     })
 }

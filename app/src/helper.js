@@ -1,4 +1,6 @@
 const consola = require('consola')
+const axios = require("axios");
+const RESTAPI = require("../constants/restapi");
 
 module.exports = {
 
@@ -10,19 +12,26 @@ module.exports = {
         return msg.chat.id
     },
 
-    getPrevTitleId(data, type) {
-
-        //    проверить что открыто, статья или раздел
-        if (type === 'TITLE') {
-            //    проверить первый подзаголовок статьи, взять его ID
-
-            // запрос к бд на определение родителя
-
-        } else {
-
-        }
-
-        //    сделать запрос на определение родительского ID от этого ID
-        //    вернуть ID
+    setSendMessage(bot, answer, GET_CHAT, setInStatistics = true) {
+        bot.sendMessage(GET_CHAT, answer.text, {
+            parse_mode: "Markdown",
+            reply_markup: {
+                inline_keyboard: answer.buttons
+            },
+            disable_notification: true
+        })
+            .then(r => {
+                    if (setInStatistics) {
+                        axios.post(process.env.DEV_HOST + RESTAPI.STAT, {
+                            parentId: answer.parentId,
+                            messageId: r.message_id,
+                            chatId: r.chat.id,
+                            firstName: r.chat.first_name,
+                            lastName: r.chat.last_name,
+                            username: r.chat.username,
+                        })
+                    }
+                }
+            );
     }
 }

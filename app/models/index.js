@@ -19,8 +19,10 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.sequelize = sequelize;
+db.sequelize = sequelize;
 
-db.titles = require("./titles.model.js")(sequelize, Sequelize);
-db.titles = require("./contents.model.js")(sequelize, Sequelize);
+db.buttons = require("./button.model.js")(sequelize, Sequelize);
+db.contents = require("./content.model.js")(sequelize, Sequelize);
+db.statistics = require("./statistics.model.js")(sequelize, Sequelize);
 
 module.exports = db;
