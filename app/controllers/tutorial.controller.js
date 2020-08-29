@@ -42,7 +42,7 @@ exports.getContent = (req, res) => {
 
 exports.setStat = (req, res) => {
     Statistics.create({
-        parentId: req.body.parentId,
+        contentId: req.body.parentId,
         messageId: req.body.messageId,
         chatId: req.body.chatId,
         firstName: req.body.firstName,

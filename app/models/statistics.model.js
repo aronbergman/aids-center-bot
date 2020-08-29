@@ -1,13 +1,10 @@
 module.exports = (sequelize, Sequelize) => {
     const Statistics = sequelize.define("statistics", {
-        parentId: {
+        contentId: {
             type: Sequelize.INTEGER
         },
-        messageId: {
-            type: Sequelize.INTEGER
-        },
-        chatId: {
-            type: Sequelize.INTEGER
+        username: {
+            type: Sequelize.TEXT
         },
         firstName: {
             type: Sequelize.TEXT
@@ -15,9 +12,12 @@ module.exports = (sequelize, Sequelize) => {
         lastName: {
             type: Sequelize.TEXT
         },
-        username: {
-            type: Sequelize.TEXT
+        messageId: {
+            type: Sequelize.INTEGER
         },
+        chatId: {
+            type: Sequelize.INTEGER
+        }
     });
 
     return Statistics;

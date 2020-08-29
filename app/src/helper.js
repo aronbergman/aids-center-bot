@@ -30,6 +30,15 @@ module.exports = {
                             lastName: r.chat.last_name,
                             username: r.chat.username,
                         })
+                    } else {
+                        axios.post(process.env.DEV_HOST + RESTAPI.STAT, {
+                            parentId: null,
+                            messageId: r.message_id,
+                            chatId: r.chat.id,
+                            firstName: r.chat.first_name,
+                            lastName: r.chat.last_name,
+                            username: r.chat.username,
+                        })
                     }
                 }
             );
