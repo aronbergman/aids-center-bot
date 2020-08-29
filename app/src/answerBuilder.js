@@ -2,10 +2,11 @@ const RESTAPI = require('../constants/restapi')
 const axios = require('axios')
 require('dotenv').config()
 
-const keyboard = async (parendId, type) => {
+const answerBuilder = async parendId => {
+    let text = ''
     const buttons = [];
 
-    const preTitles = await axios.post(process.env.DEV_HOST + RESTAPI.SUBTITLES, {parendId})
+    await axios.post(process.env.DEV_HOST + RESTAPI.SUBTITLES, {parendId})
         .then(async (data) => {
                 console.log('preTitles DATA.DATA', data.data)
 
@@ -24,7 +25,12 @@ const keyboard = async (parendId, type) => {
                 }]) : null
             }
         )
-    return buttons
+
+
+    return {
+        text: text,
+        buttons: buttons
+    }
 }
 
-module.exports = keyboard
+module.exports = answerBuilder
