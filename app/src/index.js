@@ -50,6 +50,21 @@ module.exports = () => {
     });
 
 
+    bot.onText(/\/before/, async msg => {
+        const answer = await answerBuilder('33');
+        const GET_CHAT = helper.getChatId(msg)
+
+        helper.setSendMessage(bot, answer, GET_CHAT)
+    });
+
+
+    bot.onText(/\/after/, async msg => {
+        const answer = await answerBuilder('34');
+        const GET_CHAT = helper.getChatId(msg)
+
+        helper.setSendMessage(bot, answer, GET_CHAT)
+    });
+
     bot.on('callback_query', async query => {
         // Не учитывать в статистике нажатия на кнопку "Назад"
         const prevBtn = !!(query.data.indexOf('<') + 1)

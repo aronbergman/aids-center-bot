@@ -10,7 +10,7 @@ const answerBuilder = async (parentId = 0, contentId) => {
 
                 data.data.childrenTitles.map(section => {
                     buttons.push([{
-                        callback_data: section.id,
+                        callback_data: section.contentId,
                         text: section.title
                     }])
                 });
