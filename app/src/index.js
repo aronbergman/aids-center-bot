@@ -79,4 +79,26 @@ module.exports = () => {
         const answer = await answerBuilder(setParentId)
         helper.setSendMessage(bot, answer, query.message.chat.id, !prevBtn)
     })
+
+
+    bot.on('message', msg => {
+        const text = msg.text;
+        if (text && text.startsWith('/')) return;
+
+        if (msg.chat.username === 'aronbergman') {
+
+            if (msg.reply_to_message) {
+                bot.sendMessage(msg.reply_to_message.text, msg.text)
+            } else {
+                bot.sendMessage(msg.chat.id, `${msg.chat.id === 146341933 ? '✅' : '⚠️'}`)
+            }
+
+        } else {
+            bot.sendMessage(146341933, `
+        ${msg.from.is_bot ? '🤖' : '🙋🏼‍♂️'} ${msg.from.first_name} ${msg.from.last_name} @${msg.from.username}
+${msg.chat.id} ${msg.text}`, {
+                parse_mode: "Markdown"
+            }).then(bot.sendMessage(146341933, msg.chat.id))
+        }
+    });
 }
