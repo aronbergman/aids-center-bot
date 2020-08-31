@@ -90,12 +90,12 @@ module.exports = () => {
             if (msg.reply_to_message) {
                 bot.sendMessage(msg.reply_to_message.text, msg.text)
             } else {
-                bot.sendMessage(msg.chat.id, `${msg.chat.id === 146341933 ? '✅' : '⚠️'}`)
+                bot.sendMessage(msg.chat.id, `${msg.chat.id === 146341933 ? msg.text : '⚠️'}`)
             }
 
         } else {
             bot.sendMessage(146341933, `
-        ${msg.from.is_bot ? '🤖' : '🙋🏼‍♂️'} ${msg.from.first_name} ${msg.from.last_name} @${msg.from.username}
+${msg.from.is_bot ? '🤖' : '🙋🏼‍♂️'} ${msg.from.first_name} ${msg.from.last_name} @${msg.from.username}
 ${msg.chat.id} ${msg.text}`, {
                 parse_mode: "Markdown"
             }).then(bot.sendMessage(146341933, msg.chat.id))
