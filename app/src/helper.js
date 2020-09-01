@@ -32,5 +32,30 @@ module.exports = {
                 }
             }
         );
+    },
+
+    updateMessage(bot, answer, query, setInStatistics = true) {
+        bot.editMessageText(answer.text, {
+            chat_id: query.message.chat.id,
+            message_id: query.message.message_id,
+            parse_mode: 'Markdown',
+            reply_markup: {
+                inline_keyboard: answer.buttons
+            },
+        }).then(r => {
+            if (setInStatistics) {
+                axios.post(process.env.DEV_HOST + RESTAPI.STAT, {
+                    parentId: answer.parentId,
+                    messageId: r.message_id,
+                    chatId: r.chat.id,
+                    firstName: r.chat.first_name,
+                    lastName: r.chat.last_name,
+                    username: r.chat.username
+                })
+            }
+        }).catch(function (err) {
+            if (err)
+                console.log("editMessage error");
+        });
     }
 }

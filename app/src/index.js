@@ -77,7 +77,7 @@ module.exports = () => {
         }
 
         const answer = await answerBuilder(setParentId)
-        helper.setSendMessage(bot, answer, query.message.chat.id, !prevBtn)
+        helper.updateMessage(bot, answer, query, !prevBtn)
     })
 
 
