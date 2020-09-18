@@ -57,5 +57,27 @@ module.exports = {
             if (err)
                 console.log("editMessage error");
         });
+    },
+
+    async checkSesion(userId) {
+        let session = null;
+        await axios.post(process.env.DEV_HOST + RESTAPI.GET_SESSION, {userId})
+            .then(data => {
+                session = data.data
+            })
+        return session
+    },
+
+    createSession(data) {
+        axios.post(process.env.DEV_HOST + RESTAPI.SET_SESSION, {
+            userId: data.id,
+            username: data.username,
+        })
+    },
+
+    destroySession(userId) {
+        axios.post(process.env.DEV_HOST + RESTAPI.DESTROY_SESSION, {
+            userId
+        })
     }
 }

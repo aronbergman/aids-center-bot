@@ -1,5 +1,7 @@
 module.exports = app => {
   const tutorials = require("../controllers/tutorial.controller.js");
+  const admin = require("../controllers/admin.controller.js");
+  const sessions = require("../controllers/sessions.controller.js");
 
   var router = require("express").Router();
 
@@ -8,23 +10,12 @@ module.exports = app => {
   router.post("/content", tutorials.getContent);
   router.post("/statistics", tutorials.setStat);
 
-  // // Retrieve all Tutorials
-  // router.get("/", tutorials.findAll);
-  //
-  // // Retrieve all published Tutorials
-  // router.get("/published", tutorials.findAllPublished);
-  //
-  // // Retrieve a single Tutorial with id
-  // router.get("/:id", tutorials.findOne);
-  //
-  // // Update a Tutorial with id
-  // router.put("/:id", tutorials.update);
-  //
-  // // Delete a Tutorial with id
-  // router.delete("/:id", tutorials.delete);
-  //
-  // // Delete all Tutorials
-  // router.delete("/", tutorials.deleteAll);
+  router.post("/admin/buttons", admin.getButtons);
+  router.post("/admin/content", admin.getContent);
+
+  router.post("/sessions/get", sessions.getSession);
+  router.post("/sessions/set", sessions.setSession);
+  router.post("/sessions/destroy", sessions.destroySession);
 
   app.use('/api', router);
 };

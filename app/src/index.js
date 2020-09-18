@@ -3,8 +3,9 @@ module.exports = () => {
 
     const helper = require('./helper')
     const answerBuilder = require('./answerBuilder')
+    const adminAnswerBuilder = require('./adminAnswerBuilder')
     const TelegramBot = require('node-telegram-bot-api');
-    const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, {
+    const bot = new TelegramBot(process.env.TELEGRAM_TOKEN_TEST, {
         polling: true,
     });
 
@@ -14,7 +15,11 @@ module.exports = () => {
         const answer = await answerBuilder('0', '9999');
         const GET_CHAT = helper.getChatId(msg)
 
-        helper.setSendMessage(bot, answer, GET_CHAT)
+        await helper.setSendMessage(bot, answer, GET_CHAT)
+        //    удалить сессию активного админа
+        await helper.checkSesion(msg.chat.id).then(async data => {
+            data.userId ? helper.destroySession(msg.chat.id) : null
+        })
     });
 
 
@@ -65,6 +70,41 @@ module.exports = () => {
         helper.setSendMessage(bot, answer, GET_CHAT)
     });
 
+    bot.onText(/\/admin/, async msg => {
+        const userId = msg.from.id
+
+        // ПЕРЕЧИСЛЕНИЕ СПИСКА АДМИНОВ В SWITCH-CASE
+        if (msg.from.id === 146341933) {
+            await helper.checkSesion(msg.chat.id).then(async data => {
+                if (!data.userId) {
+                    //    иначе сохраняю ее и возвращаю админское меню
+                    helper.createSession(msg.chat)
+                }
+            })
+        }
+
+        helper.checkSesion(userId).then(async data => {
+            if (data.userId) {
+                //    авторизация пройдена
+                const answer = await adminAnswerBuilder('0', '9999');
+                const GET_CHAT = helper.getChatId(msg)
+                helper.setSendMessage(bot, answer, GET_CHAT)
+            } else {
+                //    авторизация не пройдена
+                bot.sendMessage(msg.chat.id, '🔑 Введите пароль для входа')
+            }
+        })
+
+        // клиент отправил admin
+        // я проверил, есть ли его чат в БД авторизованных сессий
+
+        // если чата нт в списке авторизованных сессий я присылаю сообщение с запросом пароля
+        // в replay на это сообщение читаю пароль, если он правильный то записываю сессию и возвращаю админское меню
+        // если пароль не верный – возвращаю сообщение о неверном пароле.
+
+        // сформировать админское меню
+    });
+
     bot.on('callback_query', async query => {
         // Не учитывать в статистике нажатия на кнопку "Назад"
         const prevBtn = !!(query.data.indexOf('<') + 1)
@@ -76,8 +116,17 @@ module.exports = () => {
             setParentId = +query.data
         }
 
-        const answer = await answerBuilder(setParentId)
-        helper.updateMessage(bot, answer, query, !prevBtn)
+        await helper.checkSesion(query.from.id).then(async data => {
+            if (data.userId) {
+                // обработать запрос в контексте админа
+                const answer = await adminAnswerBuilder(setParentId)
+                helper.updateMessage(bot, answer, query, !prevBtn)
+            } else {
+                // обработать запрос в контексте пользователя
+                const answer = await answerBuilder(setParentId)
+                helper.updateMessage(bot, answer, query, !prevBtn)
+            }
+        })
     })
 
 
