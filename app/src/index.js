@@ -7,7 +7,7 @@ module.exports = () => {
     const statBuilder = require('./statBuilder')
     const fs = require('fs')
     const TelegramBot = require('node-telegram-bot-api');
-    const bot = new TelegramBot(process.env.TELEGRAM_TOKEN_TEST, {
+    const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, {
         polling: true,
     });
 
