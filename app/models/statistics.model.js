@@ -3,6 +3,9 @@ module.exports = (sequelize, Sequelize) => {
         contentId: {
             type: Sequelize.INTEGER
         },
+        title: {
+            type: Sequelize.TEXT
+        },
         username: {
             type: Sequelize.TEXT
         },

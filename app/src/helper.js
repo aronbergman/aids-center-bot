@@ -21,7 +21,7 @@ module.exports = {
             disable_notification: true
         }).then(r => {
                 if (setInStatistics) {
-                    axios.post(process.env.DEV_HOST + RESTAPI.STAT, {
+                    axios.post(process.env.DEV_HOST + RESTAPI.SET_STAT, {
                         parentId: answer.parentId,
                         messageId: r.message_id,
                         chatId: r.chat.id,
@@ -43,16 +43,20 @@ module.exports = {
                 inline_keyboard: answer.buttons
             },
         }).then(r => {
+
             if (setInStatistics) {
-                axios.post(process.env.DEV_HOST + RESTAPI.STAT, {
-                    parentId: answer.parentId,
-                    messageId: r.message_id,
-                    chatId: r.chat.id,
-                    firstName: r.chat.first_name,
-                    lastName: r.chat.last_name,
-                    username: r.chat.username
-                })
+                axios.post(process.env.DEV_HOST + RESTAPI.BUTTON_TITLE, {id: answer.parentId})
+                    .then((e) => axios.post(process.env.DEV_HOST + RESTAPI.SET_STAT, {
+                        parentId: answer.parentId,
+                        messageId: r.message_id,
+                        chatId: r.chat.id,
+                        title: e.data.title,
+                        firstName: r.chat.first_name,
+                        lastName: r.chat.last_name,
+                        username: r.chat.username
+                    }))
             }
+
         }).catch(function (err) {
             if (err)
                 console.log("editMessage error");

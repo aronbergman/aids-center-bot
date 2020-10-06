@@ -4,6 +4,8 @@ module.exports = () => {
     const helper = require('./helper')
     const answerBuilder = require('./answerBuilder')
     const adminAnswerBuilder = require('./adminAnswerBuilder')
+    const statBuilder = require('./statBuilder')
+    const fs = require('fs')
     const TelegramBot = require('node-telegram-bot-api');
     const bot = new TelegramBot(process.env.TELEGRAM_TOKEN_TEST, {
         polling: true,
@@ -71,29 +73,27 @@ module.exports = () => {
     });
 
     bot.onText(/\/admin/, async msg => {
-        const userId = msg.from.id
 
-        // ПЕРЕЧИСЛЕНИЕ СПИСКА АДМИНОВ В SWITCH-CASE
-        if (msg.from.id === 146341933) {
+        const admins = [
+            146341933, // aronbergman
+            1201299758, // kirill
+            101194540, // serge
+        ];
+
+        if (admins.indexOf( msg.from.id ) !== -1) {
             await helper.checkSesion(msg.chat.id).then(async data => {
                 if (!data.userId) {
                     //    иначе сохраняю ее и возвращаю админское меню
                     helper.createSession(msg.chat)
                 }
-            })
-        }
-
-        helper.checkSesion(userId).then(async data => {
-            if (data.userId) {
-                //    авторизация пройдена
+                // вернуть админу меню
                 const answer = await adminAnswerBuilder('0', '9999');
                 const GET_CHAT = helper.getChatId(msg)
-                helper.setSendMessage(bot, answer, GET_CHAT)
-            } else {
-                //    авторизация не пройдена
-                bot.sendMessage(msg.chat.id, '🔑 Введите пароль для входа')
-            }
-        })
+                helper.setSendMessage(bot, answer, GET_CHAT, false)
+            })
+        } else {
+            bot.sendMessage(msg.chat.id, '🔑 Доступ запрещён. Для запуска отправь /start')
+        }
 
         // клиент отправил admin
         // я проверил, есть ли его чат в БД авторизованных сессий
@@ -120,7 +120,53 @@ module.exports = () => {
             if (data.userId) {
                 // обработать запрос в контексте админа
                 const answer = await adminAnswerBuilder(setParentId)
-                helper.updateMessage(bot, answer, query, !prevBtn)
+                helper.updateMessage(bot, answer, query, false)
+
+                if (query.data === '1') {
+
+                    await statBuilder().then(async () => {
+
+                        function formatDate(date) {
+                            let d = new Date(date),
+                                month = '' + (d.getMonth() + 1),
+                                day = '' + d.getDate(),
+                                year = d.getFullYear(),
+                                heur = d.getHours(),
+                                minutes = d.getMinutes();
+
+                            if (month.length < 2)
+                                month = '0' + month;
+                            if (day.length < 2)
+                                day = '0' + day;
+
+                            return `(выгрузка ${day}.${month}.${year} в ${heur}-${minutes})`
+                        }
+
+                        const fileInterval = setInterval(() => {
+
+                            const nowData = formatDate(Date.now());
+                            const file = 'filename.xlsx';
+
+                            if (fs.existsSync(file)) {
+                                bot.sendDocument(
+                                    query.message.chat.id,
+                                    fs.readFileSync(file),
+                                    {},
+                                    {
+                                        filename: `aidscenter_bot ${nowData}.xlsx`,
+                                        contentType: 'application/application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                                    }).then(() => {
+                                    clearInterval(fileInterval);
+                                    fs.existsSync(file) ? fs.unlinkSync(file) : null;
+                                })
+                            }
+
+                        }, 1000);
+
+
+                    })
+                }
+
             } else {
                 // обработать запрос в контексте пользователя
                 const answer = await answerBuilder(setParentId)
