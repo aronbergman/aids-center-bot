@@ -3,6 +3,7 @@ module.exports = app => {
   const stat = require("../controllers/stat.controller.js");
   const admin = require("../controllers/admin.controller.js");
   const sessions = require("../controllers/sessions.controller.js");
+  const events = require("../controllers/events.controller.js");
 
   var router = require("express").Router();
 
@@ -19,6 +20,9 @@ module.exports = app => {
   router.post("/sessions/get", sessions.getSession);
   router.post("/sessions/set", sessions.setSession);
   router.post("/sessions/destroy", sessions.destroySession);
+
+  router.post("/events/last", events.getLastEvent);
+  router.post("/events/add/1", events.addEventStepOne);
 
   app.use('/api', router);
 };

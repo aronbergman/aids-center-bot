@@ -16,7 +16,7 @@
     "sequelize",
     "mysql"
   ],
-  "author": "bezkoder",
+  "author": "Aron Bergman <brgmn@icloud.com>",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",

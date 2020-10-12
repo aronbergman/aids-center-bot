@@ -5,6 +5,7 @@ module.exports = () => {
     const answerBuilder = require('./answerBuilder')
     const adminAnswerBuilder = require('./adminAnswerBuilder')
     const statBuilder = require('./statBuilder')
+    const eventBuilder = require('./eventBuilder')
     const fs = require('fs')
     const TelegramBot = require('node-telegram-bot-api');
     const token = process.env.NODE_ENV === 'develop' ? process.env.TELEGRAM_TOKEN_TEST : process.env.TELEGRAM_TOKEN;
@@ -81,7 +82,7 @@ module.exports = () => {
             101194540, // serge
         ];
 
-        if (admins.indexOf( msg.from.id ) !== -1) {
+        if (admins.indexOf(msg.from.id) !== -1) {
             await helper.checkSesion(msg.chat.id).then(async data => {
                 if (!data.userId) {
                     //    иначе сохраняю ее и возвращаю админское меню
@@ -113,7 +114,9 @@ module.exports = () => {
                 const answer = await adminAnswerBuilder(setParentId)
                 helper.updateMessage(bot, answer, query, false)
 
-                if (query.data === '1') {
+                console.log(query.data)
+
+                if (query.data === '1') { // Статистика
 
                     await statBuilder().then(async () => {
 
@@ -156,6 +159,11 @@ module.exports = () => {
 
 
                     })
+
+                } else { // Мероприятия
+
+                    await eventBuilder(query.data, bot, query)
+
                 }
 
             } else {

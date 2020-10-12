@@ -23,6 +23,7 @@ db.sequelize = sequelize;
 db.sequelize = sequelize;
 db.sequelize = sequelize;
 db.sequelize = sequelize;
+db.sequelize = sequelize;
 
 db.buttons = require("./button.model.js")(sequelize, Sequelize);
 db.adminButtons = require("./adminButton.model.js")(sequelize, Sequelize);
@@ -30,5 +31,6 @@ db.contents = require("./content.model.js")(sequelize, Sequelize);
 db.amdinContents = require("./adminContent.model.js")(sequelize, Sequelize);
 db.statistics = require("./statistics.model.js")(sequelize, Sequelize);
 db.sessions = require("./sessions.model.js")(sequelize, Sequelize);
+db.events = require("./events.model.js")(sequelize, Sequelize);
 
 module.exports = db;
