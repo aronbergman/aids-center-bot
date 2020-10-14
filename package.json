@@ -4,8 +4,8 @@
   "description": "Node.js Rest Apis with Express, Sequelize & MySQL",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js",
+    "dev": "NODE_ENV=develop nodemon server.js",
+    "start": "NODE_ENV=production node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -16,7 +16,7 @@
     "sequelize",
     "mysql"
   ],
-  "author": "bezkoder",
+  "author": "Aron Bergman <brgmn@icloud.com>",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
@@ -26,6 +26,7 @@
     "dotenv": "^8.2.0",
     "excel4node": "^1.7.2",
     "express": "^4.17.1",
+    "moment": "^2.29.1",
     "mysql2": "^2.0.2",
     "node-telegram-bot-api": "^0.50.0",
     "nodemon": "^2.0.4",

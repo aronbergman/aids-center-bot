@@ -7,7 +7,8 @@ module.exports = () => {
     const statBuilder = require('./statBuilder')
     const fs = require('fs')
     const TelegramBot = require('node-telegram-bot-api');
-    const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, {
+    const TOKEN = process.env.NODE_ENV === 'develop' ? process.env.TELEGRAM_TOKEN_TEST : process.env.TELEGRAM_TOKEN
+    const bot = new TelegramBot(TOKEN, {
         polling: true,
     });
 
@@ -80,7 +81,7 @@ module.exports = () => {
             101194540, // serge
         ];
 
-        if (admins.indexOf( msg.from.id ) !== -1) {
+        if (admins.indexOf(msg.from.id) !== -1) {
             await helper.checkSesion(msg.chat.id).then(async data => {
                 if (!data.userId) {
                     //    иначе сохраняю ее и возвращаю админское меню

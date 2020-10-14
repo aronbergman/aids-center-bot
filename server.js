@@ -38,3 +38,5 @@ app.listen(PORT, () => {
 });
 
 require("./app/src/index")();
+
+require("./app/src/setEveentsFromAPI")();
