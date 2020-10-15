@@ -5,7 +5,7 @@ const db = require("../models");
 const Contents = db.contents;
 
 module.exports = () => {
-    let eventsFormatting = ''
+    let eventsFormatting = '*КАЛЕНДАРЬ БЛИЖАЙШИХ МЕРОПРИЯТИЙ*\nНажми на мероприятие и ты узнаешь МЕСТО и АДРЕС его проведения \n\n'
     const eventsBuilder = () => axios.get('https://api.spid.center/v3/events')
         .then(({data}) => data.events.items.map(item => {
             const date = moment(item.date_from).format('LLL');
