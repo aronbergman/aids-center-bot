@@ -12,6 +12,9 @@ module.exports = () => {
             const eventsItem = `${date}\n[${item.title}](https://spid.center/ru/events/${item.id})\n\n`
             eventsFormatting = eventsFormatting + eventsItem
         }))
+        .then(() => {
+            eventsFormatting = eventsFormatting + '*Анонс ближайшего мероприятия:*'
+        })
         .then(async () => {
             try {
                 const result = await Contents.update(
