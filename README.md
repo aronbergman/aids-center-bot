@@ -1,32 +1,58 @@
-# Node.js Rest APIs with Express, Sequelize & MySQL example
+# aids-center-bot
 
-For more detail, please visit:
-> [Build Node.js Rest APIs with Express, Sequelize & MySQL](https://bezkoder.com/node-js-express-sequelize-mysql/)
+Telegram бот фонда СПИД.ЦЕНТР
 
-> [Server side Pagination in Node.js with Sequelize and MySQL](https://bezkoder.com/node-js-sequelize-pagination-mysql/)
+Стек: Node.js Rest APIs with Express, Sequelize & MySQL
 
-> [Deploying/Hosting Node.js app on Heroku with MySQL database](https://bezkoder.com/deploy-node-js-app-heroku-cleardb-mysql/)
+## Настройка проекта
 
-Associations:
-> [Sequelize Associations: One-to-Many Relationship example](https://bezkoder.com/sequelize-associate-one-to-many/)
+Содержание файла .env (разместить в корне каталога)
 
-> [Sequelize Associations: Many-to-Many Relationship example](https://bezkoder.com/sequelize-associate-many-to-many/)
+TELEGRAM_TOKEN_TEST относится к боту @aidscenter_bot
 
-Fullstack:
-> [Vue.js + Node.js + Express + MySQL example](https://bezkoder.com/vue-js-node-js-express-mysql-crud-example/)
+TELEGRAM_TOKEN_TEST относится к боту @aronbergman_beta_bot
 
-> [Vue.js + Node.js + Express + MongoDB example](https://bezkoder.com/vue-node-express-mongodb-mevn-crud/)
-
-> [Angular + Node.js + Express + MySQL example](https://bezkoder.com/angular-node-express-mysql/)
-
-> [React + Node.js + Express + MySQL example](https://bezkoder.com/react-node-express-mysql/)
-
-## Project setup
+```
+TELEGRAM_TOKEN=1392563930:AAHnqQY-LfFSg0TQH25_6zNNB0-SjZexqPQ
+TELEGRAM_TOKEN_TEST=1343088360:AAENQ0ThgZwjha8-cBS0Nuiyq5uT-b5JbG4
+DEV_HOST=http://localhost:8080/
+DB_USER=root
+DB_RASSWORD=Salut@3462
+DB_NAME=testdb
+ADMIN_PASSWORD=Liverpool4
+``` 
+Установка зависимостей
 ```
 npm install
 ```
+Настройка базы данных MySQL с именем из .env
 
-### Run
+
+### Запуск
+
+Разработка
 ```
-node server.js
+npm run dev
 ```
+Запуск на сервере
+```
+npm run start
+```
+
+### Функционал и принцип работы
+1. База знаний основана на древовидной вложенности кнопок (таблица buttons).
+У кнопки просмативается contentId, если такой номер есть у других кнопок в parentId, то она открывает список кнопок, которые его имеют. Если у кнопки есть contentId которого нет у parentId других кнопок, то открывается контент (из таблицы contents по id)
+
+2. Личная беседа с ботом.
+Отправка сообщения администраторам (список хардкодный: Влад Вишневский, Арон)
+(#TODO: Сделать, чтоб ответ оператора видели другие опетаторы, чтоб не отвечать дважды на одно сообщение которое изначально пришло всем операторам.)
+
+3. Список мероприятий.
+Загразка событий из API и их фильтрация по дате.
+
+4. Админка /admin
+Права на доступ: Сергей Абдурахманов, Арон
+Позволяет формировать Excel (и отправлять в боте) из таблицы statistics в которую сохтаняются все клики по кнопкам. (Если это была первая авторизация в боте в ID будет NULL. Переходы по кнопке "Назад" в статистику не записываются)
+
+5. Дампы бд содержатся в папке data
+Актуальны на 18.12.2020
