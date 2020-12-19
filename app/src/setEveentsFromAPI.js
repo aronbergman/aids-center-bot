@@ -31,9 +31,7 @@ module.exports = () => {
     }
 
     eventsBuilder().then(() => {
-        console.log("SET INTERVAL EVENTS UPDATE EVERY HOUR")
-        setInterval(() => eventsBuilder(), 3600000)
+        console.log("SET INTERVAL EVENTS UPDATE EVERY HOUR");
+        setInterval(() => eventsBuilder(), 3600000);
     })
-
-    // добавить команду в мой api на принудительное обновление мероприятий, в боте реализовать кнопку "Синхронизировать мероприятия"
 }

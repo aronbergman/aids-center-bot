@@ -1,7 +1,6 @@
 const db = require("../models");
 const Buttons = db.adminButtons;
 const Contents = db.amdinContents;
-// const Op = db.Sequelize.Op;
 let childrenTitles = []
 let prevBtnId = null
 let prevBtnName = null

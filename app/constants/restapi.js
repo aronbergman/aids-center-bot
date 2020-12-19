@@ -9,5 +9,4 @@ module.exports = {
     GET_SESSION: 'api/sessions/get',
     SET_SESSION: 'api/sessions/set',
     DESTROY_SESSION: 'api/sessions/destroy',
-    // PREV_BUTTON_ID: 'api/tutorials/prev-button-id'
 }

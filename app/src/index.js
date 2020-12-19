@@ -1,13 +1,13 @@
 module.exports = () => {
-    require('dotenv').config()
+    require('dotenv').config();
 
-    const helper = require('./helper')
-    const answerBuilder = require('./answerBuilder')
-    const adminAnswerBuilder = require('./adminAnswerBuilder')
-    const statBuilder = require('./statBuilder')
-    const fs = require('fs')
+    const helper = require('./helper');
+    const answerBuilder = require('./answerBuilder');
+    const adminAnswerBuilder = require('./adminAnswerBuilder');
+    const statBuilder = require('./statBuilder');
+    const fs = require('fs');
     const TelegramBot = require('node-telegram-bot-api');
-    const TOKEN = process.env.NODE_ENV === 'develop' ? process.env.TELEGRAM_TOKEN_TEST : process.env.TELEGRAM_TOKEN
+    const TOKEN = process.env.NODE_ENV === 'develop' ? process.env.TELEGRAM_TOKEN_TEST : process.env.TELEGRAM_TOKEN;
     const bot = new TelegramBot(TOKEN, {
         polling: true,
     });

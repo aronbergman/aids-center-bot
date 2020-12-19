@@ -1,6 +1,6 @@
-const RESTAPI = require('../constants/restapi')
-const axios = require('axios')
-require('dotenv').config()
+const RESTAPI = require('../constants/restapi');
+const axios = require('axios');
+require('dotenv').config();
 
 const statBuilder = async () => {
 
@@ -46,4 +46,4 @@ const statBuilder = async () => {
         });
 }
 
-module.exports = statBuilder
+module.exports = statBuilder;

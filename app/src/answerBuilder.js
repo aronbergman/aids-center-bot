@@ -1,6 +1,6 @@
-const RESTAPI = require('../constants/restapi')
-const axios = require('axios')
-require('dotenv').config()
+const RESTAPI = require('../constants/restapi');
+const axios = require('axios');
+require('dotenv').config();
 
 const answerBuilder = async (parentId = 0, contentId) => {
 
@@ -34,4 +34,4 @@ const answerBuilder = async (parentId = 0, contentId) => {
     return {text, buttons, parentId}
 }
 
-module.exports = answerBuilder
+module.exports = answerBuilder;

@@ -1,10 +1,9 @@
 const db = require("../models");
 const Buttons = db.buttons;
 const Contents = db.contents;
-// const Op = db.Sequelize.Op;
-let childrenTitles = []
-let prevBtnId = null
-let prevBtnName = null
+let childrenTitles = [];
+let prevBtnId = null;
+let prevBtnName = null;
 
 exports.getButtons = (req, res) => {
 
@@ -31,15 +30,15 @@ exports.getButtons = (req, res) => {
                     })
             }
         )
-}
+};
 
 exports.getButtonTitle = (req, res) => {
     Buttons.findOne({where: {id: req.body.id}})
         .then(data => res.send(data))
-}
+};
 
 exports.getContent = (req, res) => {
 
     Contents.findOne({where: {buttonId: req.body.parentId}})
         .then(data => res.send(data))
-}
+};

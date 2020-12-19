@@ -4,7 +4,7 @@ module.exports = app => {
   const admin = require("../controllers/admin.controller.js");
   const sessions = require("../controllers/sessions.controller.js");
 
-  var router = require("express").Router();
+  const router = require("express").Router();
 
   router.post("/buttons", tutorials.getButtons);
   router.post("/button/title", tutorials.getButtonTitle);
